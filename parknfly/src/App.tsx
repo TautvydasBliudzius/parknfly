@@ -1,19 +1,18 @@
-import './App.css';
-import {Routes, Route} from 'react-router-dom'
-import Main from './comonents/pages/Main/Main';
-import HowToFind from './comonents/pages/HowToFind/HowToFind';
-import Reservation from './comonents/pages/Reservation/Reservation';
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Home from './comonents/pages/HomePage/Home';
+import ReservationPage from './comonents/pages/ReservationPage/ReservationPage';
+import NonExistPage from './comonents/pages/NonExistPage/NonExistPage';
 
-
-function App() {
+const App: React.FC = () => {
   return (
-    <>
-    <Routes>
-        <Route path='/' element={<Main/>} />
-        <Route path='/howtofind' element={<HowToFind/>} />
-        <Route path='/reservation' element={<Reservation/>} />
-    </Routes>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/reservationPage" element={<ReservationPage />} />
+        <Route path="*" element={<NonExistPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
