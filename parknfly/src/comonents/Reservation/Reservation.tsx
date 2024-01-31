@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { DateRange } from 'react-date-range';
-import { format } from 'date-fns'
+import { format, isWithinInterval } from 'date-fns'
 import { useNavigate } from "react-router-dom";
 import { getSpots } from "../api/spots";
 
@@ -41,43 +41,32 @@ const Reservation: React.FC = () => {
   }, []);
 
   const onSubmit = () => {
-    
-    const hasOverlap = spots.every(spot => {
+    const hasOverlap = spots.some(spot => {
       return spot.occupancy.some(({ startDate, endDate }) => {
-        const formattedSelectedStartDate = format(parkingDate[0].startDate, "dd/MM/yyyy");
-        const formattedSelectedEndDate = format(parkingDate[0].endDate, "dd/MM/yyyy");
-  
-        const [dayS, monthS, yearS] = formattedSelectedStartDate.split("/");
-        const [dayE, monthE, yearE] = formattedSelectedEndDate.split("/");
-
-        const [dbDayS, dbMonthS, dbYearS] = startDate.split("/");
-        const [dbDayE, dbMonthE, dbYearE] = endDate.split("/");
-    
-        const splitedSelectedStartDate = yearS + monthS + dayS
-        const splitedSelectedEndDate = yearE + monthE + dayE
-
-        const splitedDbStartDate = dbYearS + dbMonthS + dbDayS
-        const splitedDbEndDate = dbYearE + dbMonthE + dbDayE
-        console.log(splitedSelectedStartDate + " s start")
-        console.log(splitedSelectedEndDate + " s end")
-        console.log(splitedDbStartDate + " d start")
-        console.log(splitedDbEndDate + " d end")
+        const selectedStartDate = parkingDate[0].startDate;
+        const selectedEndDate = parkingDate[0].endDate;
+        const spotStartDate = new Date(startDate);
+        const spotEndDate = new Date(endDate);
+        console.log(selectedStartDate + " selected")
+        console.log(spotStartDate + " interval start")
+        console.log(spotEndDate + " interval end")
+        console.log(isWithinInterval(selectedStartDate, { start: spotStartDate, end: spotEndDate }) )
+        console.log(isWithinInterval(selectedEndDate, { start: spotStartDate, end: spotEndDate }))
         return (
-          (splitedSelectedStartDate <= splitedDbEndDate && splitedSelectedEndDate >= splitedDbStartDate) || 
-          (splitedSelectedEndDate >= splitedDbStartDate && splitedSelectedEndDate <= splitedDbEndDate) || 
-          (splitedSelectedStartDate >= splitedDbStartDate && splitedSelectedStartDate <= splitedDbEndDate) ||
-          (splitedSelectedStartDate === splitedDbStartDate) || (splitedSelectedStartDate == splitedDbEndDate) ||
-          (splitedSelectedEndDate === splitedDbStartDate) || (splitedSelectedEndDate === splitedDbEndDate)
+          isWithinInterval(selectedStartDate, { start: spotStartDate, end: spotEndDate }) ||
+          isWithinInterval(selectedEndDate, { start: spotStartDate, end: spotEndDate })
         );
       });
-    });
-  
+    }); 
     setIsSpotFree(!hasOverlap);
+  
     if (!hasOverlap) {
-      console.log("navigate")
+      console.log("navigate");
       // navigate("/reservationPage", { state: { parkingDate } });
     }
   };
+  
+  
 
   return (
     <div id="reservation">
