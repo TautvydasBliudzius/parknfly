@@ -5,3 +5,4 @@ export const getSpots = async () => {
   return response.data;
 };
 
+

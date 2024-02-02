@@ -3,9 +3,11 @@ import { DateRange } from 'react-date-range';
 import { format, isWithinInterval } from 'date-fns'
 import { useNavigate } from "react-router-dom";
 import { getSpots } from "../api/spots";
+import { createOccupancy } from "../api/occupancy";
 
-import 'react-date-range/dist/styles.css'; 
-import 'react-date-range/dist/theme/default.css'; 
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css';
+
 interface Spot {
   _id: string;
   spotNr: string;
@@ -13,8 +15,8 @@ interface Spot {
 }
 
 interface Occupancy {
-  startDate: string;
-  endDate: string;
+  startDate: Date;
+  endDate: Date;
 }
 
 const Reservation: React.FC = () => {
@@ -40,37 +42,65 @@ const Reservation: React.FC = () => {
       });
   }, []);
 
+
+
+
   const onSubmit = () => {
-    const hasOverlap = spots.some(spot => {
-      return spot.occupancy.some(({ startDate, endDate }) => {
-        const selectedStartDate = parkingDate[0].startDate;
-        const selectedEndDate = parkingDate[0].endDate;
-        const spotStartDate = new Date(startDate);
-        const spotEndDate = new Date(endDate);
-        console.log(selectedStartDate + " selected")
-        console.log(spotStartDate + " interval start")
-        console.log(spotEndDate + " interval end")
-        console.log(isWithinInterval(selectedStartDate, { start: spotStartDate, end: spotEndDate }) )
-        console.log(isWithinInterval(selectedEndDate, { start: spotStartDate, end: spotEndDate }))
-        return (
-          isWithinInterval(selectedStartDate, { start: spotStartDate, end: spotEndDate }) ||
-          isWithinInterval(selectedEndDate, { start: spotStartDate, end: spotEndDate })
-        );
+    if (spots.length === 0) {
+      console.error("No spots available.");
+      return;
+    }
+
+    const spotId = spots[0]._id; 
+
+    createOccupancy(
+      {
+        startDate: parkingDate[0].startDate,
+        endDate: parkingDate[0].endDate
+      },
+      spotId
+    )
+      .then((response) => {
+        console.log("Occupancy created successfully:", response);
+      })
+      .catch((error) => {
+        console.error("Error creating occupancy:", error);
       });
-    }); 
-    setIsSpotFree(!hasOverlap);
-  
-    if (!hasOverlap) {
+
+
+    console.log(spots);
+    const selectedStartDate: Date = parkingDate[0].startDate;
+    const selectedEndDate: Date = parkingDate[0].endDate;
+    const dbStartDate = spots[0].occupancy[0].startDate
+    // console.log(typeof(dbStartDate))
+    console.log(typeof (selectedEndDate))
+    console.log(selectedStartDate)
+    // console.log(dbStartDate)  
+    const firstFreeSpot = spots.find((spot) =>
+      spot.occupancy.find(({ startDate, endDate }: Occupancy) =>
+        !isWithinInterval(selectedStartDate, {
+          start: new Date(2024, 0, 28),
+          end: new Date(2024, 1, 2),
+        }) &&
+        !isWithinInterval(selectedEndDate, {
+          start: new Date(2024, 0, 28),
+          end: new Date(2024, 1, 2),
+        })
+      )
+    );
+
+    console.log(firstFreeSpot);
+
+    if (firstFreeSpot) {
       console.log("navigate");
       // navigate("/reservationPage", { state: { parkingDate } });
     }
   };
-  
-  
+
 
   return (
     <div id="reservation">
-      {isSpotFree ? ( 
+      {isSpotFree ? (
         <>
           <div className="headerDateInput">
             <span onClick={() => setOpenDate(!openDate)} className="headerDateInputText">Automobilio parkavimo laikotarpis</span>
@@ -92,7 +122,7 @@ const Reservation: React.FC = () => {
         </>
       ) : (
         <>
-        <div className="headerDateInput">
+          <div className="headerDateInput">
             <span onClick={() => setOpenDate(!openDate)} className="headerDateInputText">Automobilio parkavimo laikotarpis</span>
             {openDate && <DateRange
               editableDateInputs={true}
