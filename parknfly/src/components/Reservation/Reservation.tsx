@@ -3,7 +3,6 @@ import { DateRange } from 'react-date-range';
 import { format, isWithinInterval } from 'date-fns'
 import { useNavigate } from "react-router-dom";
 import { getSpots } from "../api/spots";
-import { createOccupancy } from "../api/occupancy";
 
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
@@ -52,20 +51,6 @@ const Reservation: React.FC = () => {
     }
 
     const spotId = spots[0]._id; 
-
-    createOccupancy(
-      {
-        startDate: parkingDate[0].startDate,
-        endDate: parkingDate[0].endDate
-      },
-      spotId
-    )
-      .then((response) => {
-        console.log("Occupancy created successfully:", response);
-      })
-      .catch((error) => {
-        console.error("Error creating occupancy:", error);
-      });
 
 
     console.log(spots);
