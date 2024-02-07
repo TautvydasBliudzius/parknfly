@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { getSpots } from "../../api/spots";
-import { format } from "date-fns";
+import { format, differenceInCalendarDays } from "date-fns";
+import ReservationForm from "../../Forms/ReservationForm/ReservationForm";
 
 interface Spot {
   _id: string;
@@ -25,19 +26,19 @@ const ReservationPage: React.FC = () => {
       });
   }, []);
 
-  const formattedStartDate = format(parkingDate[0].startDate, "dd/MM/yyyy");
-  const formattedEndDate = format(parkingDate[0].endDate, "dd/MM/yyyy");
-
-  const [dayS, monthS, yearS] = formattedStartDate.split("/");
-  const [dayE, monthE, yearE] = formattedEndDate.split("/");
-
-  const splitedStartDate = yearS + monthS + dayS;
-  const splitedEndDate = yearE + monthE + dayE;
-  console.log("splitedStartDate", splitedStartDate);
-  console.log("splitedEndDate", splitedEndDate);
-
   const goBack = () => {
     navigate("/");
+  };
+
+  const calculatePrice = (startDate: Date, endDate: Date): number => {
+    const daysBooked = differenceInCalendarDays(endDate, startDate);
+    if (daysBooked >= 8) {
+      return daysBooked * 3; // 3 euros per day for 8 or more days
+    } else if (daysBooked >= 4) {
+      return daysBooked * 3.5; // 3.5 euros per day for 4-7 days
+    } else {
+      return daysBooked * 4; // 4 euros per day for 1-3 days
+    }
   };
 
   return (
@@ -50,13 +51,31 @@ const ReservationPage: React.FC = () => {
       </div>
 
       <div>
-        <div>from</div>
+        <h2>Rezervacijos informacija:</h2>
+        <h3>Atvykimo data:</h3>
         <div>
-          {parkingDate && format(parkingDate[0].startDate, "dd/MM/yyyy")}
+          {parkingDate && format(parkingDate[0].startDate, "yyyy-MM-dd")}
         </div>
-        <div>to</div>
-        <div>{parkingDate && format(parkingDate[0].endDate, "dd/MM/yyyy")}</div>
-        <div></div>
+        <h3>Išvykimo data:</h3>
+        <div>{parkingDate && format(parkingDate[0].endDate, "yyyy-MM-dd")}</div>
+        <div>
+        <button onClick={goBack}>Keisti datas</button>
+        </div>
+        <div>
+          <h3>Suma:</h3>
+          <h4 id="price">
+            {/* Calculate the price and display it */}
+            {parkingDate &&
+              calculatePrice(
+                new Date(parkingDate[0].startDate),
+                new Date(parkingDate[0].endDate)
+              )}
+            euros
+          </h4>
+        </div>
+      </div>
+      <div>
+        <ReservationForm/>
       </div>
 
       <button onClick={goBack}>grizti</button>

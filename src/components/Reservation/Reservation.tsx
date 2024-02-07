@@ -3,6 +3,7 @@ import { DateRange } from 'react-date-range';
 import { format, isWithinInterval } from 'date-fns'
 import { useNavigate } from "react-router-dom";
 import { getSpots } from "../api/spots";
+import { create } from "zustand";
 
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
@@ -10,12 +11,13 @@ import 'react-date-range/dist/theme/default.css';
 interface Spot {
   _id: string;
   spotNr: string;
-  occupancy: Occupancy[];
+  occupancies: Occupancy[];
 }
 
 interface Occupancy {
   startDate: Date;
   endDate: Date;
+  _id: string;
 }
 
 const Reservation: React.FC = () => {
@@ -28,7 +30,7 @@ const Reservation: React.FC = () => {
     } as any
   ]);
   const [spots, setSpots] = useState<Spot[]>([]);
-  const [isSpotFree, setIsSpotFree] = useState(false);
+  const [isSpotFree, setIsSpotFree] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -45,40 +47,27 @@ const Reservation: React.FC = () => {
 
 
   const onSubmit = () => {
-    if (spots.length === 0) {
-      console.error("No spots available.");
-      return;
-    }
 
-    const spotId = spots[0]._id; 
-
-
-    console.log(spots);
     const selectedStartDate: Date = parkingDate[0].startDate;
     const selectedEndDate: Date = parkingDate[0].endDate;
-    const dbStartDate = spots[0].occupancy[0].startDate
-    // console.log(typeof(dbStartDate))
-    console.log(typeof (selectedEndDate))
-    console.log(selectedStartDate)
-    // console.log(dbStartDate)  
+
+    // await createOccupancy(spotId, { startDate: selectedStartDate, endDate: selectedEndDate })
+
     const firstFreeSpot = spots.find((spot) =>
-      spot.occupancy.find(({ startDate, endDate }: Occupancy) =>
-        !isWithinInterval(selectedStartDate, {
-          start: new Date(2024, 0, 28),
-          end: new Date(2024, 1, 2),
-        }) &&
-        !isWithinInterval(selectedEndDate, {
-          start: new Date(2024, 0, 28),
-          end: new Date(2024, 1, 2),
-        })
+      !spot.occupancies.some(({ startDate, endDate }) =>
+        isWithinInterval(selectedStartDate, { start: new Date(startDate), end: new Date(endDate) }) ||
+        isWithinInterval(selectedEndDate, { start: new Date(startDate), end: new Date(endDate) })
       )
     );
 
-    console.log(firstFreeSpot);
-
     if (firstFreeSpot) {
-      console.log("navigate");
-      // navigate("/reservationPage", { state: { parkingDate } });
+      setIsSpotFree(true)
+      navigate("/reservationPage", { state: { parkingDate } });
+      sessionStorage.setItem("startDate", JSON.stringify(selectedStartDate));
+      sessionStorage.setItem("endDate", JSON.stringify(selectedEndDate));
+    }
+    else {
+      setIsSpotFree(false)
     }
   };
 
