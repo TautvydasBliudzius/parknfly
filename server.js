@@ -5,16 +5,13 @@ require("dotenv").config();
 const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser')
 
-
 const port = process.env.PORT || 8080;
 
 const URI = process.env.DB_CONNECTION_STRING;
 
 const app = express();
 
-
 app.options('*', cors())
-
 app.use(express.json());
 app.use(cors());
 app.use(cookieParser())
@@ -22,49 +19,48 @@ app.use(cookieParser())
 const client = new MongoClient(URI);
 
 const verifyAdmin = (req, res, next) => {
-  const token = req.cookies.token;
+  const token = req.cookies;
 
   if(!token) {
     return res.json("The token was not available")
   } else {
     jwt.verify(token, "jwt-secret-key", (err, decoded) => {
-      if(err) return res.json("Token is wrong")
-      next( )
-    })
+      if(err) {
+        console.error("Token is wrong:", err);
+        return res.json("Token is wrong");
+      }
+      req.decodedToken = decoded; 
+      next();
+    });
   }
 }
 
-
-
 app.get("/admin/menu", verifyAdmin, (req, res) => {
   res.send("Success")
-})
+});
 
 app.post("/login", async (req, res) => {
-  const {email, password} = req.body;
+  const { email, password } = req.body;
   const con = await client.connect();
-  await con.db("parknfly").collection("admins").findOne({email: email})
-  .then(user => {
-    if(user) {
-      if(user.password === password) {
-        const token = jwt.sign({email: user.email}, "jwt-secret-key", {expiresIn:15*60})
-        console.log(token)
-        let options = {
-          maxAge: 1000 * 60 * 15, // would expire after 15 minutes
-      }
+  await con
+    .db("parknfly")
+    .collection("admins")
+    .findOne({ email: email })
+    .then((user) => {
+      if (user) {
+        if (user.password === password) {
+          const token = jwt.sign({ email: user.email }, "jwt-secret-key");
   
-      // Set cookie
-      res.cookie("token", token, options)
-      res.setHeader("Authorization", `Bearer ${token}`)
-        res.send("Success")
+          res.send({ token, message: "Success" });
+        } else {
+          res.send("The password is incorrect");
+        }
       } else {
-        res.send("The password is incorrect")
+        res.send("No record exist");
       }
-    } else {
-      res.send("No record exist")
-    }
-  })
-})
+    });
+});
+
 
 app.get("/spots", async (req, res) => {
   try {

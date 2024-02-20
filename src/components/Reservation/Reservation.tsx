@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { DateRange } from 'react-date-range';
 import { format, isWithinInterval } from 'date-fns'
 import { useNavigate } from "react-router-dom";
 import { getSpots } from "../api/spots";
-import { create } from "zustand";
+import lt from 'date-fns/locale/lt';
 
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
@@ -32,6 +32,7 @@ const Reservation: React.FC = () => {
   const [spots, setSpots] = useState<Spot[]>([]);
   const [isSpotFree, setIsSpotFree] = useState(true);
   const navigate = useNavigate();
+  const dateRangeRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     getSpots()
@@ -41,17 +42,23 @@ const Reservation: React.FC = () => {
       .catch((error) => {
         console.error(error);
       });
+
+    document.addEventListener("mousedown", handleOutsideClick);
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
   }, []);
 
-
-
+  const handleOutsideClick = (event: MouseEvent) => {
+    if ((dateRangeRef.current && !dateRangeRef.current.contains(event.target as Node))) {
+      setOpenDate(false);
+    }
+  };
 
   const onSubmit = () => {
-
     const selectedStartDate: Date = parkingDate[0].startDate;
     const selectedEndDate: Date = parkingDate[0].endDate;
-
-    // await createOccupancy(spotId, { startDate: selectedStartDate, endDate: selectedEndDate })
 
     const firstFreeSpot = spots.find((spot) =>
       !spot.occupancies.some(({ startDate, endDate }) =>
@@ -74,48 +81,50 @@ const Reservation: React.FC = () => {
 
   return (
     <div id="reservation">
-      {isSpotFree ? (
-        <>
-          <div className="headerDateInput">
-            <span onClick={() => setOpenDate(!openDate)} className="headerDateInputText">Automobilio parkavimo laikotarpis</span>
-            {openDate && <DateRange
-              editableDateInputs={true}
-              onChange={item => setParkingDate([item.selection])}
-              moveRangeOnFirstSelection={false}
-              ranges={parkingDate}
-              className="dateInput"
-            />}
+      <div id="reservationBox">
+        <div className="dateRangeContainer">
+          <div ref={dateRangeRef}>
+            <button
+              onClick={() => {
+                setOpenDate(!openDate);
+              }}
+              className="headerDateInputText"
+            >
+              Pasirinkti automobilio stovėjimo laikotarpį
+            </button>
+
+            <div className="dateRangeBox" >
+              {openDate && (
+                <DateRange
+                  editableDateInputs={true}
+                  onChange={item => setParkingDate([item.selection])}
+                  moveRangeOnFirstSelection={false}
+                  ranges={parkingDate}
+                  className="dateInput"
+                  locale={lt}
+                />
+              )}
+            </div>
           </div>
-          <div>
-            <div>from</div>
-            <div>{`${format(parkingDate[0].startDate, "dd/MM/yyyy")}`}</div>
-            <div>to</div>
-            <div>{`${format(parkingDate[0].endDate, "dd/MM/yyyy")}`}</div>
+
+          <div className="dateBoxContainer">
+            <div className="dateBox">
+              <div className="dateBoxTitle">Atvykimo data</div>
+              <div>{`${format(parkingDate[0].startDate, "yyyy-MM-dd")}`}</div>
+            </div>
+
+            <div className="dateBox">
+              <div className="dateBoxTitle">Išvykimo data</div>
+              <div>{`${format(parkingDate[0].endDate, "yyyy-MM-dd")}`}</div>
+            </div>
           </div>
-          <button type="submit" onClick={onSubmit}>Tikrinti</button>
-        </>
-      ) : (
-        <>
-          <div className="headerDateInput">
-            <span onClick={() => setOpenDate(!openDate)} className="headerDateInputText">Automobilio parkavimo laikotarpis</span>
-            {openDate && <DateRange
-              editableDateInputs={true}
-              onChange={item => setParkingDate([item.selection])}
-              moveRangeOnFirstSelection={false}
-              ranges={parkingDate}
-              className="dateInput"
-            />}
-          </div>
-          <div>
-            <div>from</div>
-            <div>{`${format(parkingDate[0].startDate, "dd/MM/yyyy")}`}</div>
-            <div>to</div>
-            <div>{`${format(parkingDate[0].endDate, "dd/MM/yyyy")}`}</div>
-          </div>
-          <h2>Pasirinktomis dienomis laivų vietų nėra</h2>
-          <button type="submit" onClick={onSubmit}>Tikrinti</button>
-        </>
-      )}
+
+          <button type="submit" onClick={onSubmit} className="checkButton">Tikrinti užimtumą</button>
+
+        </div>
+        {!isSpotFree ? (<div className="noSpotsError">Apgailestaujame, pasirinktomis dienomis laisvų vietų nėra</div>) : (<div></div>)}
+
+      </div>
     </div>
   );
 }

@@ -2,8 +2,8 @@ import React from "react";
 import Header from "../../Header/Header";
 import Reservation from "../../Reservation/Reservation";
 import HowToFind from "../../HowToFind/HowToFind";
-import Contacts from "../../Contacts/Contacts";
 import Footer from "../../Footer/Footer";
+import HowToUse from "../../HowToUse/HowToUse";
 
 
 
@@ -14,7 +14,7 @@ const Home: React.FC = () => {
                 <Header />
                 <Reservation />
                 <HowToFind />
-                <Contacts />
+                <HowToUse />
                 <Footer />
             </>
         </div>

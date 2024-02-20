@@ -1,0 +1,34 @@
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px 0;
+  }
+  
+  .footer-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+  
+  .contact-info, .social-icons, .requisites {
+    flex: 1;
+  }
+  
+  .contact-info h2, .social-icons h2, .requisites h2 {
+    margin-bottom: 10px;
+  }
+  
+  .social-icons .icons {
+    display: flex;
+  }
+  
+  .social-icons .icons i {
+    font-size: 24px;
+    margin-right: 10px;
+  }
+  
+  .copyright {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
