@@ -1,34 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { getSpots } from "../../api/spots";
 import { format, differenceInCalendarDays } from "date-fns";
 import ReservationForm from "../../Forms/ReservationForm/ReservationForm";
-
-interface Spot {
-  _id: string;
-  spotNr: string;
-  occupancy: [];
-}
 
 const ReservationPage: React.FC = () => {
   const location = useLocation();
   const parkingDate = location.state && location.state.parkingDate;
   const navigate = useNavigate();
-  const [spots, setSpots] = useState<Spot[]>([]);
 
-  useEffect(() => {
-    getSpots()
-      .then((response) => {
-        setSpots(response);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
 
   const goBack = () => {
     navigate("/");
   };
+
 
   const calculatePrice = (startDate: Date, endDate: Date): number => {
     const daysBooked = differenceInCalendarDays(endDate, startDate);
@@ -43,13 +27,7 @@ const ReservationPage: React.FC = () => {
 
   return (
     <div id="reservationPage">
-      <h1>Reservation Page</h1>
-      <div>
-        {spots.map((spot) => (
-          <div key={spot._id}>{spot.occupancy}</div>
-        ))}
-      </div>
-
+      <h1>Reservation Page</h1>     
       <div>
         <h2>Rezervacijos informacija:</h2>
         <h3>Atvykimo data:</h3>
@@ -59,7 +37,7 @@ const ReservationPage: React.FC = () => {
         <h3>Išvykimo data:</h3>
         <div>{parkingDate && format(parkingDate[0].endDate, "yyyy-MM-dd")}</div>
         <div>
-        <button onClick={goBack}>Keisti datas</button>
+          <button onClick={goBack}>Keisti datas</button>
         </div>
         <div>
           <h3>Suma:</h3>
@@ -75,10 +53,10 @@ const ReservationPage: React.FC = () => {
         </div>
       </div>
       <div>
-        <ReservationForm/>
+        <ReservationForm />
       </div>
 
-      <button onClick={goBack}>grizti</button>
+      <button onClick={goBack}>Grįžti</button>
     </div>
   );
 };

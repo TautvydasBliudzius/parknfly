@@ -1,6 +1,7 @@
 import React from "react";
 import FormInput from "../FormInput/FormInput";
 import { useNavigate } from "react-router-dom";
+import './ReservationForm.css'
 
 
 interface ReservationFormProps { }
@@ -21,9 +22,11 @@ const ReservationForm: React.FC<ReservationFormProps> = () => {
                 <FormInput label="Automobilio valstybinis numeris:" placeholder="AAA000" type="text"/>
                 <FormInput label="Tel. Nr.:" placeholder="+370" type="text"/>
                 <FormInput label="El. pašto adresas:" placeholder="info@parknfly.lt" type="email"/>
-                <label className="agreeWithRulesLaber">Sutinku su</label>
+                <label className="agreeWithRulesLabel">Sutinku su</label>
                 <a onClick={navigateToRules}>taisyklėmis</a>
                 <input type="checkbox" id="agreeWithRules"/>
+                <br/>
+                <button type="submit">Rezervuoti</button>
             </form>
         </div>
     );

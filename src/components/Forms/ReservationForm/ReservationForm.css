@@ -1,0 +1,44 @@
+#reservationForm {
+    margin-top: 20px;
+  }
+  
+  #orderForm {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .agreeWithRulesLabel {
+    margin-top: 10px;
+    margin-bottom: 5px;
+    font-size: 14px;
+  }
+  
+  .agreeWithRulesLabel a {
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  
+  .agreeWithRulesLabel a:hover {
+    color: darkblue;
+  }
+  
+  #agreeWithRules {
+    margin-right: 5px;
+    cursor: pointer;
+  }
+  
+  button[type="submit"] {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #0056b3;
+  }
+  

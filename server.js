@@ -61,6 +61,17 @@ app.post("/login", async (req, res) => {
     });
 });
 
+app.post("/spots", async (req, res) => {
+  try {
+    const spot = req.body;
+    const con = await client.connect();
+    const data = await con.db("parknfly").collection("spots").insertOne(spot);
+    await con.close();
+    res.send(data);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
 
 app.get("/spots", async (req, res) => {
   try {
@@ -97,6 +108,27 @@ app.put("/spots/:id", async (req, res) => {
     res.status(500).send(error);
   }
 });
+
+app.delete("/spots/:id", async (req, res) => {
+  try {
+    const id = req.params._id;
+    const con = await client.connect();
+    const result = await con
+      .db("parknfly")
+      .collection("spots")
+      .deleteOne(id); 
+    await con.close();
+
+    if (result.deletedCount === 1) {
+      res.send({ message: "Spot deleted successfully" });
+    } else {
+      res.status(404).send("Spot not found");
+    }
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
 
 app.delete("/spots/:id/occupancies/:occupancyId", async (req, res) => {
   try {
@@ -176,6 +208,8 @@ app.post("/customers", async (req, res) => {
     res.status(500).send(error);
   }
 });
+
+
 
 app.delete("/customers/:id", async (req, res) => {
   try {
