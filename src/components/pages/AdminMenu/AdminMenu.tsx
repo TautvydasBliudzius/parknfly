@@ -19,12 +19,26 @@ interface Spot {
   }[];
 }
 
+interface Customer {
+  _id: string;
+  spotId: string;
+  name: string;
+  carPlate: string;
+  mobileNumber: string;
+  email: string;
+  price: string;
+  occupancy: {
+    startDate: Date;
+    endDate: Date;
+  }[];
+}
 
 const AdminMenu: React.FC = () => {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [cookies, setCookie] = useCookies(["access_token"]);
   const [spots, setSpots] = useState<Spot[]>([]);
+  const [customers, setCustomers] = useState<Customer[]>([]);
   const [isSpotsOpen, setSpotsOpen] = useState(false)
   const [openDate, setOpenDate] = useState(false);
   const [availableSpotCount, setAvailableSpotCount] = useState<number>(0);
@@ -98,7 +112,6 @@ const AdminMenu: React.FC = () => {
   const createNewSpot = async () => {
     try {
       const newSpot = {
-        spotNr: "3",
         occupancies: []
       };
       const response = await createSpot(newSpot);
@@ -108,6 +121,28 @@ const AdminMenu: React.FC = () => {
       console.error(error);
     }
   };
+
+  // const createCustomer = async () => {
+  //   try {
+  //     // const newCustomer = {
+  //     //   spotId: string;
+  //     //   name: string;
+  //     //   carPlate: string;
+  //     //   mobileNumber: string;
+  //     //   email: string;
+  //     //   price: string;
+  //     //   occupancy: {
+  //     //     startDate: Date;
+  //     //     endDate: Date;
+  //     //   }[];
+  //     // };
+  //     const response = await createSpot(newCustomer);
+  //     console.log("Customer creates successfully" , newCustomer)
+  //     setSpots([...spots, response]);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   const spotDelete = async (spotId: string) => {
     try {
@@ -130,7 +165,7 @@ const AdminMenu: React.FC = () => {
         <>
           {spots.map(spot => (
             <div key={spot._id}>
-              <h3>Spot Nr. {spot.spotNr}</h3>
+              <h5>Spot id. {spot._id}</h5>
               <p>Vietos užimtumas:</p>
               {spot.occupancies && spot.occupancies.length > 0 ? (
               <ul>
@@ -166,20 +201,25 @@ const AdminMenu: React.FC = () => {
               )}
             </div>
       <br/>
-      <div className="dateBoxContainer">
-            <div className="dateBox">
-              <div className="dateBoxTitle">Atvykimo data</div>
+      <div>
+            <div>
+              <div >Atvykimo data</div>
               <div>{`${format(parkingDate[0].startDate, "yyyy-MM-dd")}`}</div>
             </div>
 
-            <div className="dateBox">
-              <div className="dateBoxTitle">Išvykimo data</div>
+            <div>
+              <div>Išvykimo data</div>
               <div>{`${format(parkingDate[0].endDate, "yyyy-MM-dd")}`}</div>
             </div>
           </div>
       <br/>
       <button onClick={() => {checkOccupanciesAccordanceToDate()}}>Tikrinti laisvų vietų skaičių</button>
       <div>Laisvų vietų skaičius pasirinktu laikotarpiu: {availableSpotCount}</div>
+      <br/>
+      {/* <button onClick={() => {createCustomer()}}>Sukurti naują klientą</button> */}
+      <br/>
+      <br/>
+      <br/>
       <br/>
       <button onClick={() => handleLogOut()}>LogOut</button>
     </div>

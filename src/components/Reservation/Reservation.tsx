@@ -33,6 +33,7 @@ const Reservation: React.FC = () => {
   const [isSpotFree, setIsSpotFree] = useState(true);
   const navigate = useNavigate();
   const dateRangeRef = useRef<HTMLDivElement>(null);
+  const [emptySpot, setEmptySpot] = useState("")
 
   useEffect(() => {
     getSpots()
@@ -69,7 +70,8 @@ const Reservation: React.FC = () => {
 
     if (firstFreeSpot) {
       setIsSpotFree(true)
-      navigate("/reservationPage", { state: { parkingDate } });
+      setEmptySpot(firstFreeSpot._id)
+      navigate("/reservationPage", { state: { parkingDate, emptySpot: firstFreeSpot._id } });
       sessionStorage.setItem("startDate", JSON.stringify(selectedStartDate));
       sessionStorage.setItem("endDate", JSON.stringify(selectedEndDate));
     }
