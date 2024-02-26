@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import NavBar from "../../NavBar/NavBar";
 
 
 
@@ -7,12 +8,14 @@ const Rules: React.FC = () => {
     const navigate = useNavigate()
 
     const goBack = () => {
-        navigate("/")
+        navigate("/reservationPage")
     }
   return (
     <div id="rules">
-        <h1>Rules</h1>
-        <button onClick={goBack}>Grįžti į pagrindinį</button>
+        <NavBar />
+        <h3>Rezervacija atlikta sėkmingai</h3>
+        <h2>Lauksime atvykstant!</h2>
+        <button onClick={goBack}>Kaip mus rasti?</button>
     </div>
   );
 }

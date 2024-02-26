@@ -36,48 +36,56 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
 
   return (
     <div id="reservationForm">
-      <form onSubmit={(e) => { e.preventDefault(); onSubmit(); }} id="orderForm">
-      <FormInput
-          label="Vardas:"
-          placeholder="Vardas"
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <FormInput
-          label="Automobilio valstybinis numeris:"
-          placeholder="AAA000"
-          type="text"
-          value={carPlate}
-          onChange={(e) => setCarPlate(e.target.value)}
-        />
-        <FormInput
-          label="Tel. Nr.:"
-          placeholder="+370"
-          type="text"
-          value={mobileNumber}
-          onChange={(e) => setMobileNumber(e.target.value)}
-        />
-        <FormInput
-          label="El. pašto adresas:"
-          placeholder="info@parknfly.lt"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <label className="agreeWithRulesLabel">
-          Sutinku su
-          <a onClick={navigateToRules}>taisyklėmis</a>
-        </label>
-        <input
-          type="checkbox"
-          id="agreeWithRules"
-          checked={agreeWithRules}
-          onChange={(e) => setAgreeWithRules(e.target.checked)}
-        />
-        <br />
-        <button type="submit">Rezervuoti</button>
-      </form>
+      <div id="formContainer">
+        <form onSubmit={(e) => { e.preventDefault(); onSubmit(); }} id="orderForm">
+          <FormInput
+            className="textInput"
+            label="Vardas:"
+            placeholder="Vardas"
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <FormInput
+            label="Automobilio valstybinis numeris:"
+            className="textInput"
+            placeholder="AAA000"
+            type="text"
+            value={carPlate}
+            onChange={(e) => setCarPlate(e.target.value)}
+          />
+          <FormInput
+            label="Tel. Nr.:"
+            className="textInput"
+            placeholder="+370"
+            type="text"
+            value={mobileNumber}
+            onChange={(e) => setMobileNumber(e.target.value)}
+          />
+          <FormInput
+            label="El. pašto adresas:"
+            className="textInput"
+            placeholder="info@parknfly.lt"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <div className="flexRow">
+            <label className="agreeWithRulesLabel">
+              Sutinku su
+              <a onClick={navigateToRules}> taisyklėmis</a>
+            </label>
+            <input
+              type="checkbox"
+              id="agreeWithRules"
+              checked={agreeWithRules}
+              onChange={(e) => setAgreeWithRules(e.target.checked)}
+            />
+          </div>
+          <br />
+          <button type="submit">Rezervuoti</button>
+        </form>
+      </div>
     </div>
   );
 };

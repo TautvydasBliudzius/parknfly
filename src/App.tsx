@@ -6,6 +6,7 @@ import NonExistPage from './components/pages/NonExistPage/NonExistPage';
 import Rules from './components/pages/Rules/Rules';
 import AdminLogin from './components/pages/AdminLogin/AdminLogin';
 import AdminMenu from './components/pages/AdminMenu/AdminMenu';
+import SuccessReservation from './components/pages/SuccessReservation/SuccessReservation'
 
 const App: React.FC = () => {
   return (
@@ -17,6 +18,7 @@ const App: React.FC = () => {
         <Route path='/rules' element={<Rules />} />
         <Route path='/admin/login' element={<AdminLogin />} />
         <Route path='/admin/menu' element={<AdminMenu />} />
+        <Route path='/success' element={<SuccessReservation />} />
       </Routes>
     </BrowserRouter>
   );

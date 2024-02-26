@@ -1,12 +1,15 @@
 import React from "react";
+import wazeIcon from '../../images/wazeicon.jpg'
+import googleMapsIcon from '../../images/googlemapsicon.png'
+import locationIcon from '../../images/location.png'
 import "./HowToFind.css";
 
-interface HowToFindProps {}
+interface HowToFindProps { }
 
 const HowToFind: React.FC<HowToFindProps> = () => {
   const address = "Tulpių g. 20B";
-  const latitude = 54.96800091537007; 
-  const longitude = 24.064404757448603;
+  const latitude = 54.96814407208941;
+  const longitude = 24.06454444182053;
 
   const handleGoogleMaps = () => {
     window.open(`https://www.google.com/maps?q=${latitude},${longitude}`);
@@ -18,27 +21,34 @@ const HowToFind: React.FC<HowToFindProps> = () => {
 
   return (
     <div id="howtofind">
-      <h1>Kaip mus rasti</h1>
+      <div className="navigationsContainer">
+        <div>
+          <div className="flexRow">
+            <img className="navIcon" src={locationIcon} alt="location Icon" />
+            <div>Tulpių g. 20B, Karmėlava, Kauno rajonas</div>
+          </div>
+          <div>Automobilių parkavimo aikštelė prie Kauno oro uosto.  Atstumas iki oro uosto – 800 m. Teritorija apšviesta, stebima vaizdo kameromis.</div>
+        </div>
+        <div id="navigationIconsContainer">
+          <div className="flexRow">
+            <img className="navIcon" onClick={handleGoogleMaps} src={googleMapsIcon} alt="Google navigation" />
+            <div>Google Maps navigacija</div>
+          </div>
+          <div className="flexRow">
+            <img className="navIcon" onClick={handleWaze} src={wazeIcon} alt="waze navigation" />
+            <div>Waze navigacija</div>
+          </div>
+        </div>
+      </div>
+
+
       <div className="map-container">
         <iframe
           title="Google Maps"
           className="google-map"
-          src={`https://www.google.com/maps/embed/v1/place?q=${latitude},${longitude}&key=YOUR_API_KEY`}
+          src={`https://www.google.com/maps/embed/v1/place?q=${latitude},${longitude}&key=AIzaSyA5NKtZFkNxzDO75yL5NouClTq1K_VvIPQ`}
           allowFullScreen
         ></iframe>
-        <div className="directions">
-          <p>
-            Aikštelės adresas:<strong>{address}</strong>
-          </p>
-          <p>
-            Nuorodos:
-            <img onClick={handleGoogleMaps} src="../../images/googlemapsicon.png" alt="Google navigation" />            
-            <img onClick={handleWaze} src="../../images/wazeicon.jpg" alt="waze navigation" />
-          </p>
-          <p>
-            Aprašymas kaip mus rasti
-          </p>
-        </div>
       </div>
     </div>
   );

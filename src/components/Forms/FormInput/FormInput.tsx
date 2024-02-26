@@ -1,5 +1,5 @@
-// FormInput.tsx
 import React, { InputHTMLAttributes } from "react";
+import "./fromInput.css"
 
 interface FormInputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;

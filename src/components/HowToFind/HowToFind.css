@@ -1,17 +1,36 @@
 #howToFind {
     text-align: center;
   }
-  
+  .navigationsContainer{
+    display: flex;
+    justify-content: space-between;
+    padding: 5rem 10rem;
+  }
+
+  .navigationsContainer div {
+    width: 30rem;
+  }
+
+  .navigationsContainer div div {
+    margin-bottom: 1rem;
+  }
+
   .map-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 20px;
+  }
+  h1 {
+    margin: 0;
+    padding: 1rem;
   }
   
+  .navIcon {
+    width: 2rem;
+  }
+
   .google-map {
     width: 100%;
-    max-width: 600px;
     height: 300px;
     border: 1px solid #ccc;
   }
@@ -33,10 +52,14 @@
   button:hover {
     background-color: #0056b3;
   }
+
+  .flexRow {
+    gap: 1rem;
+  }
   
   @media screen and (max-width: 768px) {
     .google-map {
-      height: 200px;
+      height: 300px;
     }
   }
   

@@ -1,5 +1,17 @@
 #reservationForm {
     margin-top: 20px;
+    display: flex;
+    justify-content: center;  
+
+  }
+  
+  #formContainer {
+    width: 20rem;
+    text-align: left;
+  }
+  
+  .textInput {
+    
   }
   
   #orderForm {
@@ -14,7 +26,7 @@
   }
   
   .agreeWithRulesLabel a {
-    color: blue;
+    color: rgb(255, 255, 255);
     text-decoration: underline;
     cursor: pointer;
   }
@@ -29,12 +41,11 @@
   }
   
   button[type="submit"] {
+    align-self:center;
+    width: 8rem;
     margin-top: 10px;
-    padding: 10px 20px;
     background-color: #007bff;
     color: #fff;
-    border: none;
-    border-radius: 5px;
     cursor: pointer;
   }
   
@@ -42,3 +53,7 @@
     background-color: #0056b3;
   }
   
+  .flexRow {
+    display: flex;
+    flex-direction: row;
+  }

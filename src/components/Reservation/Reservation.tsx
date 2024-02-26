@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { DateRange } from 'react-date-range';
-import { format, isWithinInterval } from 'date-fns'
+import { format, isWithinInterval, differenceInCalendarDays } from 'date-fns'
 import { useNavigate } from "react-router-dom";
 import { getSpots } from "../api/spots";
 import lt from 'date-fns/locale/lt';
@@ -31,6 +31,7 @@ const Reservation: React.FC = () => {
   ]);
   const [spots, setSpots] = useState<Spot[]>([]);
   const [isSpotFree, setIsSpotFree] = useState(true);
+  const [selectedDays, setIsSelectedMoreThan1Days] = useState(true)
   const navigate = useNavigate();
   const dateRangeRef = useRef<HTMLDivElement>(null);
   const [emptySpot, setEmptySpot] = useState("")
@@ -60,7 +61,7 @@ const Reservation: React.FC = () => {
   const onSubmit = () => {
     const selectedStartDate: Date = parkingDate[0].startDate;
     const selectedEndDate: Date = parkingDate[0].endDate;
-
+    const diffInDays = differenceInCalendarDays(selectedEndDate, selectedStartDate);
     const firstFreeSpot = spots.find((spot) =>
       !spot.occupancies.some(({ startDate, endDate }) =>
         isWithinInterval(selectedStartDate, { start: new Date(startDate), end: new Date(endDate) }) ||
@@ -68,7 +69,9 @@ const Reservation: React.FC = () => {
       )
     );
 
-    if (firstFreeSpot) {
+    
+
+    if (firstFreeSpot && diffInDays >= 1) {
       setIsSpotFree(true)
       setEmptySpot(firstFreeSpot._id)
       navigate("/reservationPage", { state: { parkingDate, emptySpot: firstFreeSpot._id } });
@@ -76,7 +79,13 @@ const Reservation: React.FC = () => {
       sessionStorage.setItem("endDate", JSON.stringify(selectedEndDate));
     }
     else {
+      if(!(diffInDays >= 1)) {
+        setIsSelectedMoreThan1Days(false)
+      }
+      else {
+      setIsSelectedMoreThan1Days(true)
       setIsSpotFree(false)
+      }
     }
   };
 
@@ -98,12 +107,13 @@ const Reservation: React.FC = () => {
             <div className="dateRangeBox" >
               {openDate && (
                 <DateRange
-                  editableDateInputs={true}
-                  onChange={item => setParkingDate([item.selection])}
-                  moveRangeOnFirstSelection={false}
-                  ranges={parkingDate}
-                  className="dateInput"
-                  locale={lt}
+                editableDateInputs={true}
+                onChange={item => setParkingDate([item.selection])}
+                moveRangeOnFirstSelection={false}
+                ranges={parkingDate}
+                className="dateInput"
+                locale={lt}
+                minDate={new Date()}
                 />
               )}
             </div>
@@ -125,7 +135,7 @@ const Reservation: React.FC = () => {
 
         </div>
         {!isSpotFree ? (<div className="noSpotsError">Apgailestaujame, pasirinktomis dienomis laisvų vietų nėra</div>) : (<div></div>)}
-
+        {!selectedDays ? (<div className="noSpotsError">Norint atlikti rezervaciją reikia pasirinkti bent 2 dienas</div>) : (<div></div>)}        
       </div>
     </div>
   );

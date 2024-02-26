@@ -4,8 +4,9 @@ import { format, differenceInCalendarDays } from "date-fns";
 import ReservationForm from "../../Forms/ReservationForm/ReservationForm";
 import { createCustomer } from "../../api/customers";
 import { createOccupancy } from "../../api/occupancy";
+import "./ReservationPage.css"
 
-interface ReservationPageProps {}
+interface ReservationPageProps { }
 
 const ReservationPage: React.FC<ReservationPageProps> = () => {
   const location = useLocation();
@@ -60,46 +61,53 @@ const ReservationPage: React.FC<ReservationPageProps> = () => {
 
   return (
     <div id="reservationPage">
-      <h1>Reservation Page</h1>
-      <div>{emptySpot}</div>
-      <div>
-        <h2>Rezervacijos informacija:</h2>
-        <h3>Atvykimo data:</h3>
-        <div>{parkingDate && format(parkingDate[0].startDate, "yyyy-MM-dd")}</div>
-        <h3>Išvykimo data:</h3>
-        <div>{parkingDate && format(parkingDate[0].endDate, "yyyy-MM-dd")}</div>
+      <div id="reservationContainer">
         <div>
-          <button onClick={goBack}>Keisti datas</button>
+          <h2>Rezervacijos informacija:</h2>
+          <p>Jūsų pasirinktu laikotarpiu laisvų vietų aiktelėje yra</p>
+          <div id="datesBox">
+            <div>
+              <h3>Atvykimo data:</h3>
+              <div>{parkingDate && format(parkingDate[0].startDate, "yyyy-MM-dd")}</div>
+            </div>
+            <div>
+              <h3>Išvykimo data:</h3>
+              <div>{parkingDate && format(parkingDate[0].endDate, "yyyy-MM-dd")}</div>
+            </div>
+          </div>
+          <div>
+            <button onClick={goBack}>Keisti datas</button>
+          </div>
+          <div>
+            <h4 id="price">
+              {parkingDate &&
+                "Suma: " +
+                calculatePrice(
+                  new Date(parkingDate[0].startDate),
+                  new Date(parkingDate[0].endDate)
+                )}
+              €
+            </h4>
+          </div>
         </div>
         <div>
-          <h3>Suma:</h3>
-          <h4 id="price">
-            {parkingDate &&
-              calculatePrice(
-                new Date(parkingDate[0].startDate),
-                new Date(parkingDate[0].endDate)
-              )}
-            euros
-          </h4>
+          <ReservationForm
+            onSubmit={onSubmit}
+            name={name}
+            setName={setName}
+            carPlate={carPlate}
+            setCarPlate={setCarPlate}
+            mobileNumber={mobileNumber}
+            setMobileNumber={setMobileNumber}
+            email={email}
+            setEmail={setEmail}
+            agreeWithRules={agreeWithRules}
+            setAgreeWithRules={setAgreeWithRules}
+          />
         </div>
-      </div>
-      <div>
-        <ReservationForm
-          onSubmit={onSubmit}
-          name={name}
-          setName={setName}
-          carPlate={carPlate}
-          setCarPlate={setCarPlate}
-          mobileNumber={mobileNumber}
-          setMobileNumber={setMobileNumber}
-          email={email}
-          setEmail={setEmail}
-          agreeWithRules={agreeWithRules}
-          setAgreeWithRules={setAgreeWithRules}
-        />
-      </div>
 
-      <button onClick={goBack}>Grįžti</button>
+        <button onClick={goBack}>Grįžti</button>
+      </div>
     </div>
   );
 };
