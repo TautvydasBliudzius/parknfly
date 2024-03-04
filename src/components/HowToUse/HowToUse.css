@@ -3,6 +3,19 @@
 }
 
 .textCard {
-    width: 30rem;
+    width: 100%;
     padding: 3rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.textCardText {
+    width: 20rem;
+}
+
+.imageBox {
+    border: 1px solid black;
+    width: 20rem;
+    height: 20rem;
 }

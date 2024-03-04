@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import FormInput from "../FormInput/FormInput";
+import PhoneInput from 'react-phone-number-input'
+import 'react-phone-number-input/style.css'
 import './ReservationForm.css'
 
 interface ReservationFormProps {
@@ -30,9 +32,23 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
   setAgreeWithRules,
 }) => {
 
+  const [values, setValues] = useState({
+    username: "",
+    email: "",
+    birthday: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+
+
   const navigateToRules = () => {
     window.open("/rules");
   };
+
+  const namePattern = /^[A-Za-z0-9]{3,16}$/;
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const carPlatePattern = /^[a-zA-Z0-9]{1,8}$/
 
   return (
     <div id="reservationForm">
@@ -45,6 +61,9 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            pattern={namePattern.source}
+            title="Name should be 3-16 characters and shouldn't include any special character!"
+            required
           />
           <FormInput
             label="Automobilio valstybinis numeris:"
@@ -53,15 +72,23 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
             type="text"
             value={carPlate}
             onChange={(e) => setCarPlate(e.target.value)}
+            pattern={carPlatePattern.source}
+            title="Input shouldn't include any special character!"
+            required
           />
-          <FormInput
-            label="Tel. Nr.:"
-            className="textInput"
-            placeholder="+370"
-            type="text"
+          <PhoneInput
+            international
+            defaultCountry="LT"
+            placeholder="Enter phone number"
             value={mobileNumber}
-            onChange={(e) => setMobileNumber(e.target.value)}
+            onChange={(value: string | undefined) => {
+              if (value && /^\+(?:[0-9] ?){6,14}[0-9]$/.test(value)) {
+                setMobileNumber(value);
+              }
+            }}
+            required
           />
+
           <FormInput
             label="El. pašto adresas:"
             className="textInput"
@@ -69,6 +96,9 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            pattern={emailPattern.source}
+            title="It should be a valid email address!"
+            required
           />
           <div className="flexRow">
             <label className="agreeWithRulesLabel">
@@ -80,6 +110,7 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
               id="agreeWithRules"
               checked={agreeWithRules}
               onChange={(e) => setAgreeWithRules(e.target.checked)}
+              required
             />
           </div>
           <br />

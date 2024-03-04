@@ -281,7 +281,7 @@ nav .menu-btn,
   }
 
   nav .menu-icon .nav-icon {
-    background-color: #0853a8;
+    background-color: #007bff;
     position: absolute;
     display: block;
     height: 2px;
@@ -292,7 +292,7 @@ nav .menu-btn,
 
   nav .menu-icon .nav-icon:before,
   nav .menu-icon .nav-icon:after {
-    background: #0853a8;
+    background: #007bff;
     content: '';
     display: block;
     height: 100%;

@@ -7,7 +7,7 @@ import "./HowToFind.css";
 interface HowToFindProps { }
 
 const HowToFind: React.FC<HowToFindProps> = () => {
-  const address = "Tulpių g. 20B";
+  const address = "Tulpių g. 20B, Karmėlava, Kauno rajonas";
   const latitude = 54.96814407208941;
   const longitude = 24.06454444182053;
 
@@ -25,7 +25,7 @@ const HowToFind: React.FC<HowToFindProps> = () => {
         <div>
           <div className="flexRow">
             <img className="navIcon" src={locationIcon} alt="location Icon" />
-            <div>Tulpių g. 20B, Karmėlava, Kauno rajonas</div>
+            <div>{address}</div>
           </div>
           <div>Automobilių parkavimo aikštelė prie Kauno oro uosto.  Atstumas iki oro uosto – 800 m. Teritorija apšviesta, stebima vaizdo kameromis.</div>
         </div>

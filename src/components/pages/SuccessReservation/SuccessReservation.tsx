@@ -1,21 +1,20 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import NavBar from "../../NavBar/NavBar";
-
-
+import './SuccessReservation.css'
 
 const Rules: React.FC = () => {
-    const navigate = useNavigate()
+  const navigate = useNavigate()
 
-    const goBack = () => {
-        navigate("/reservationPage")
-    }
+  const goBack = () => {
+    navigate("/")
+  }
   return (
-    <div id="rules">
-        <NavBar />
+    <div id="successReservation">
+      <div id="successMessageContainer">
         <h3>Rezervacija atlikta sėkmingai</h3>
         <h2>Lauksime atvykstant!</h2>
-        <button onClick={goBack}>Kaip mus rasti?</button>
+        <button onClick={goBack}>Į pradžią</button>
+      </div>
     </div>
   );
 }
