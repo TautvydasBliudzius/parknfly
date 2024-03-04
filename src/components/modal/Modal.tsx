@@ -1,18 +1,15 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import './Rules.css'
+import "./Modal.css";
 
+interface ModalProps {
+  onClose: () => void;
+  showModal: Boolean;
+}
 
-
-const Rules: React.FC = () => {
-  const navigate = useNavigate()
-
-  const goBack = () => {
-    navigate("/")
-  }
+const Modal: React.FC<ModalProps> = ({ showModal, onClose }) => {
   return (
-    <div id="rules">
-      <div id="rulesContainer">
+    <div className="modal" style={{ display: showModal ? 'block' : 'none' }}>
+        <div className="modal-content">
         <h1>Paslaugos naudojimosi taisyklės</h1>
         <h3>1. BENDRA INFORMACIJA</h3>
         <p>1.1 Šios taisyklės galioja paslaugos „FLYParking“ aikštelės rezervacijai, atliekamai interneto svetainėje
@@ -40,10 +37,10 @@ const Rules: React.FC = () => {
         <p>5.1 Bet koks ginčas ar nesutarimas dėl šios Sutarties ir/ar susijęs su ja, kuris per 30 (trisdešimt) dienų nuo vienos
           Šalies pareikšto reikalavimo dėl įsipareigojimų vykdymo neišsprendžiamas derybų keliu, turi būti sprendžiamas Lietuvos Respublikos norminių aktų nustatyta tvarka pagal tiekėjo buveinės adresą.</p>
         <p>5.2 Šiai Sutarčiai taikomi ir ji aiškinama pagal galiojančius Lietuvos Respublikos įstatymus.</p>
-        <button onClick={goBack}>Grįžti į pagrindinį</button>
+        <span className="close" onClick={onClose}>&times;</span>
       </div>
     </div>
   );
-}
+};
 
-export default Rules;
+export default Modal;

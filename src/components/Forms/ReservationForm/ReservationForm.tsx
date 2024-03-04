@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import FormInput from "../FormInput/FormInput";
 import PhoneInput from 'react-phone-number-input'
+import Modal from "../../modal/Modal"
 import 'react-phone-number-input/style.css'
 import './ReservationForm.css'
 
@@ -32,18 +33,10 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
   setAgreeWithRules,
 }) => {
 
-  const [values, setValues] = useState({
-    username: "",
-    email: "",
-    birthday: "",
-    password: "",
-    confirmPassword: "",
-  });
+  const [showModal, setShowModal] = useState(false);
 
-
-
-  const navigateToRules = () => {
-    window.open("/rules");
+  const toggleModal = () => {
+    setShowModal(!showModal);
   };
 
   const namePattern = /^[A-Za-z0-9]{3,16}$/;
@@ -77,6 +70,7 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
             required
           />
           <PhoneInput
+            style={{ marginBottom: "1rem" }}
             international
             defaultCountry="LT"
             placeholder="Enter phone number"
@@ -102,8 +96,9 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
           />
           <div className="flexRow">
             <label className="agreeWithRulesLabel">
-              Sutinku su
-              <a onClick={navigateToRules}> taisyklėmis</a>
+              Sutinku su 
+              <a onClick={toggleModal}> taisyklėmis</a>
+          {showModal && <Modal showModal={showModal} onClose={toggleModal} />}
             </label>
             <input
               type="checkbox"
