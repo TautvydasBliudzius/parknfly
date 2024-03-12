@@ -76,7 +76,7 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
             placeholder="Enter phone number"
             value={mobileNumber}
             onChange={(value: string | undefined) => {
-              if (value && /^\+(?:[0-9] ?){6,14}[0-9]$/.test(value)) {
+              if (value && /^\+[0-9]{7,15}$/.test(value)) {
                 setMobileNumber(value);
               }
             }}
@@ -96,9 +96,9 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
           />
           <div className="flexRow">
             <label className="agreeWithRulesLabel">
-              Sutinku su 
+              Sutinku su
               <a onClick={toggleModal}> taisyklėmis</a>
-          {showModal && <Modal showModal={showModal} onClose={toggleModal} />}
+              {showModal && <Modal showModal={showModal} onClose={toggleModal} />}
             </label>
             <input
               type="checkbox"

@@ -1,47 +1,134 @@
-footer {
-    background-color: #333;
-    color: #fff;
-    padding: 2rem 2rem;
-  }
-  
-  .footer-container {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-  }
-  
-  .contact-info, .social-icons, .requisites {
-    flex: 1;
-  }
-  
-  .contact-info h2, .social-icons h2, .requisites h2 {
-    margin-bottom: 10px;
-  }
-  
-  .social-icons .icons {
-    display: flex;
-  }
-  
-  .social-icons .icons i {
-    font-size: 24px;
-    margin-right: 10px;
-  }
-  
-  .copyright {
-    text-align: center;
-    margin-top: 20px;
-  }
-  
-  .footerIcons {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap");
 
-  .navIconFooterGoogle {
-    width: 40px;
-  }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
 
-  .navIconFooterWaze {
-    width: 40px;
+.footer {
+  position: relative;
+  width: 100%;
+  background: #3586ff;
+  color: white;
+  min-height: 100px;
+  padding: 20px 50px;
+  margin-top: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.footerContent {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  gap: 25rem;
+}
+
+.social-icon,
+.menu {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+  flex-wrap: wrap;
+}
+
+.social-icon__item,
+.menu__item {
+  list-style: none;
+}
+
+.social-icon__link {
+  font-size: 2rem;
+  color: #fff;
+  margin: 0 10px;
+  display: inline-block;
+  transition: 0.5s;
+}
+.social-icon__link:hover {
+  transform: translateY(-10px);
+  cursor: pointer;
+}
+
+.menu__link {
+  font-size: 1.2rem;
+  color: #fff;
+  margin: 0 10px;
+  display: inline-block;
+  transition: 0.5s;
+  text-decoration: none;
+  opacity: 0.75;
+  font-weight: 300;
+}
+
+.menu__link:hover {
+  opacity: 1;
+}
+
+.footer p {
+  color: #fff;
+  margin: 15px 0 10px 0;
+  font-size: 1rem;
+  font-weight: 300;
+}
+
+.wave {
+  position: absolute;
+  top: -100px;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background: url("https://i.ibb.co/wQZVxxk/wave.png");
+  background-size: 1000px 100px;
+}
+
+.wave#wave1 {
+  z-index: 1000;
+  opacity: 1;
+  bottom: 0;
+  animation: animateWaves 4s linear infinite;
+}
+
+.wave#wave2 {
+  z-index: 999;
+  opacity: 0.5;
+  bottom: 10px;
+  animation: animate 4s linear infinite !important;
+}
+
+.wave#wave3 {
+  z-index: 1000;
+  opacity: 0.2;
+  bottom: 15px;
+  animation: animateWaves 3s linear infinite;
+}
+
+.wave#wave4 {
+  z-index: 999;
+  opacity: 0.7;
+  bottom: 20px;
+  animation: animate 3s linear infinite;
+}
+
+@keyframes animateWaves {
+  0% {
+    background-position-x: 1000px;
   }
+  100% {
+    background-positon-x: 0px;
+  }
+}
+
+@keyframes animate {
+  0% {
+    background-position-x: -1000px;
+  }
+  100% {
+    background-positon-x: 0px;
+  }
+}

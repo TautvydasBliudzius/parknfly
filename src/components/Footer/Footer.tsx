@@ -1,6 +1,8 @@
 import React from "react";
-import WazeIcon from "../../images/wazeiconBlue.png"
-import GoogleMapsIcon from "../../images/googlemapsicon.png"
+import { FaWaze } from "react-icons/fa";
+import { SiGooglemaps } from "react-icons/si";
+import { FaPhone } from "react-icons/fa";
+import { MdEmail } from "react-icons/md";
 import "./Footer.css";
 
 const Footer: React.FC = () => {
@@ -16,30 +18,47 @@ const Footer: React.FC = () => {
   };
 
   return (
-    <footer>
-      <div className="footer-container">
-        <div className="contact-info">
-          <h2>Kontaktai</h2>
-          <p>Email: info@parknfly.lt</p>
-          <p>Tel.Nr.: +123456789</p>
-          <p>Adresas: Tulpių g. 20B, Karmėlava, Kauno raj.</p>
+    <footer className="footer">
+      <div className="waves">
+        <div className="wave" id="wave1"></div>
+        <div className="wave" id="wave2"></div>
+        <div className="wave" id="wave3"></div>
+        <div className="wave" id="wave4"></div>
+      </div>
+      <div className="footerContent">
+        <div>
+          <ul>
+            <li><h4>Kontaktai</h4></li>
+            <li><FaPhone/>+37063105725</li>
+            <li><MdEmail/>info@parknfly.lt</li>
+          </ul>
         </div>
-        <div className="social-icons">
-          <h2>Nuorodos</h2>
-          <div className="footerIcons">
-            <img className="navIconFooterGoogle" onClick={handleGoogleMaps} src={GoogleMapsIcon} alt="Google navigation" />
-            <img className="navIconFooterWaze" onClick={handleWaze} src={WazeIcon} alt="waze navigation" />
-          </div>
-        </div>
-        <div className="requisites">
-          <h2>Rekvizitai</h2>
-          <p>MB, Parkavimo Paslauga</p>
-          <p>Įmonės kodas: 306671589</p>
+
+        <ul className="social-icon">
+          <li className="social-icon__item">
+            <div className="social-icon__link" onClick={handleGoogleMaps}>
+              <SiGooglemaps />
+            </div>
+          </li>
+          <li className="social-icon__item">
+            <div className="social-icon__link" onClick={handleWaze}>
+              <FaWaze />
+            </div>
+          </li>
+        </ul>
+
+        <div>
+          <ul>
+            <li>Rekvizitai</li>
+            <li>Parkavimo paslauga, MB</li>
+            <li>Įmonės kodas: 306671589</li>
+            <li></li>
+          </ul>
         </div>
       </div>
-      <div className="copyright">
-        <p>&copy; 2024 ParkNFly. All rights reserved.</p>
-      </div>
+
+
+      <p>&copy;2024 ParkNFly | All Rights Reserved</p>
     </footer>
   );
 }
